@@ -213,7 +213,7 @@ public:
 		
 		mxws <uint32_t>RNG;
 		
-		cxx::ziggurat_normal_distribution<double> normal(0, 1. / sqrt(2));
+		cxx::ziggurat_normal_distribution<T> normal(0, 1. / sqrt(2));
 
 		for (L i = 0; i < iterations; i++) {
 
