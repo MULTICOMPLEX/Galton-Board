@@ -362,11 +362,11 @@ public:
 	}
 
 	template <typename T, typename L>
-		requires std::floating_point<T>&& std::integral<L>
+		requires std::floating_point<T>&& 
+	std::same_as<L, std::uint64_t>
 	T sqrt_mc(T z = 2, L throws = 10000000000)
 	{
-
-		uint64_t tel = 0, i = 0;
+		L tel = 0, i = 0;
 		T r;
 
 		if (z < 1) {
@@ -393,7 +393,8 @@ public:
 	}
 
 	template <typename T, typename L>
-		requires std::floating_point<T>&& std::integral<L>
+		requires std::floating_point<T>&& 
+	std::same_as<L, std::uint64_t>
 	T exp_mc(T x = 0.9, L n_samples = 10000000000)
 	{
 		if (x == 0) return 1;
