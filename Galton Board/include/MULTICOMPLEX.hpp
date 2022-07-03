@@ -8,7 +8,7 @@
 
 //http://tamivox.org/eugene/multicomplex/index.html
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 class multicomplex
 {
 
@@ -406,16 +406,12 @@ private:
 
 public:
 	template <int x_order>
-		requires (x_order >= 0 && x_order <= order_value)
 	multicomplex<elem, x_order> const& at_con(int const n) const {
-		static int const full{ 1 << (order - x_order) };
 		return priv_at_con<x_order>(*this, n);
 	}
 
 	template <int x_order>
-		requires (x_order >= 0 && x_order <= order_value)
 	multicomplex<elem, x_order>& at_var(int const n) {
-		static int const full{ 1 << (order - x_order) };
 		return priv_at_var<x_order>(*this, n);
 	}
 
@@ -514,8 +510,6 @@ class multicomplex<elem, 0>
 {
 
 public:
-
-	static constexpr int order_value = 0;
 
 	elem real{};
 	elem imag{};
@@ -726,29 +720,27 @@ public:
 	// selection by position
 	template <int x_order>
 	static typename
-		std::enable_if <order_value == x_order, multicomplex<elem, x_order> const&>::type
+		std::enable_if <0 == x_order, multicomplex<elem, x_order> const&>::type
 		priv_at_con(multicomplex<elem, 0> const& source, int const n) {
 		return source;
 	}
 
 	template <int x_order>
 	static typename
-		std::enable_if <order_value == x_order, multicomplex<elem, x_order>&>::type
+		std::enable_if <0 == x_order, multicomplex<elem, x_order>&>::type
 		priv_at_var(multicomplex<elem, 0>& source, int const n) {
 		return source;
 	}
 private:
 	template <int x_order>
-		requires (x_order >= 0 && x_order <= order_value)
+		requires (x_order == 0)
 	multicomplex<elem, x_order> const& at_con(int const n) const {
-		static int const full{ 1 << (order_value - x_order) };
 		return priv_at_con<x_order>(*this, n);
 	}
 
 	template <int x_order>
-		requires (x_order >= 0 && x_order <= order_value)
+		requires (x_order == 0)
 	multicomplex<elem, x_order>& at_var(int const n) {
-		static int const full{ 1 << (order_value - x_order) };
 		return priv_at_var<x_order>(*this, n);
 	}
 public:
@@ -995,7 +987,7 @@ bool operator!= (const int a, const multicomplex<elem, order>& b)
 
 
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 multicomplex<elem, order> multicomplex<elem, order>::random(const elem& lower, const elem& upper)
 {
 	mxws <uint32_t>rng;
@@ -1023,7 +1015,7 @@ multicomplex<elem, 0> multicomplex<elem, 0>::random(const elem& lower, const ele
 
 //cout
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 void multicomplex<elem, order>::view_i
 (
 	std::ostream& o
@@ -1051,7 +1043,7 @@ void multicomplex<elem, 0>::view_i
 }
 
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 void multicomplex<elem, order>::view_j
 (
 	std::ostream& o
@@ -1063,7 +1055,7 @@ void multicomplex<elem, order>::view_j
 }
 
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 void multicomplex<elem, order>::view_j
 (
 	std::ostream& o,
@@ -1106,7 +1098,7 @@ void multicomplex<elem, 0>::view_j
 }
 
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 void multicomplex<elem, order>::view_k
 (
 	std::ostream& o

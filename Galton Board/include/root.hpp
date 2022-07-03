@@ -1,6 +1,6 @@
 
 template <typename elem, int order>
-  requires (order >= 0 && order < 25)
+  requires ((order >= 0) && (order < 25))
 class multicomplex;
 
 template <typename F1, typename elem, int order>

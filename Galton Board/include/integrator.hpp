@@ -4,7 +4,7 @@
 #include <hep/mc.hpp>
 
 template <typename elem, int order>
-	requires (order >= 0 && order < 25)
+	requires ((order >= 0) && (order < 25))
 class multicomplex;
 
 //https://en.wikipedia.org/wiki/Numerical_integration

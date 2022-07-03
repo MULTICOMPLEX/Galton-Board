@@ -3,7 +3,7 @@
 //https://en.wikipedia.org/wiki/Numerical_differentiation
 
 template <typename elem, int order>
-  requires (order >= 0 && order < 25)
+  requires ((order >= 0) && (order < 25))
 class multicomplex;
 
 template <typename elem, int order>
