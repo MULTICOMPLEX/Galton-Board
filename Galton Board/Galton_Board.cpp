@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	I N_Bins = 2048;
 
 	//Sinusoidal Distribution
-	B probability_wave = true;
+	B probability_wave = 0;
 	//Raw distribution
 	B raw = false;
 	//Enable Fourier transform

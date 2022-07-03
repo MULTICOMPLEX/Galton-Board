@@ -1,6 +1,8 @@
 #include <random>
 #include <numbers>
 #include <iostream>
+#include <iostream>
+#include "ziggurat.hpp"
 
 template <typename RN>
 	requires
@@ -199,6 +201,33 @@ public:
 			<< std::erf(x) << std::endl;
 
 		return estimate;
+	}
+
+	template <typename T, typename L>
+		requires std::floating_point<T>&&
+	std::integral<L>
+		T error_function_mc(const T& x, const L& iterations)
+	{
+		T erf;
+		L erft = 0;
+		
+		mxws <uint32_t>RNG;
+		
+		cxx::ziggurat_normal_distribution<double> normal(0, 1. / sqrt(2));
+
+		for (L i = 0; i < iterations; i++) {
+;
+				erf = normal(RNG);
+
+			if ((erf >= -x) && (erf <= x))
+				erft++;
+		}
+
+		std::cout << "error_function_mc(" << x << ") = " << erft / T(iterations) << std::endl;
+		std::cout << "    std::function(" << x << ") = "
+			<< std::erf(x) << std::endl;
+
+		return erft / T(iterations);
 	}
 
 	template <typename T>

@@ -7,7 +7,6 @@
 //#include "coroutine.hpp"
 #include "matplotlib.hpp"
 #include "number_theory.hpp"
-#include "ziggurat.hpp"
 
 plot_matplotlib plot;
 
@@ -27,7 +26,6 @@ std::integral<T>
 
 	const double mean = Board_SIZE / 2, stddev = 1;
 
-	std::normal_distribution<double> normal(mean, (Board_SIZE / 12) * stddev);
 	cxx::ziggurat_normal_distribution<double> normalz(mean, (Board_SIZE / 12) * stddev);
 
 	for (L i = 0; i < balls; i++, random_walk = 0) {
@@ -39,12 +37,13 @@ std::integral<T>
 			k = T((random_walk - mean) / sqrt(12. / Board_SIZE) * stddev + mean);
 		}
 
-		else
-			//k = T(normal(RNG));
-			//k = T(RNG.normalRandom<double>(mean, sigma));
+		else {
+
 			k = T(normalz(RNG));
-		//The 1D board
-		if (k < Board_SIZE) galton_arr[k]++;
+
+			//The 1D board
+			if (k < Board_SIZE) galton_arr[k]++;
+		}
 	}
 };
 
@@ -66,8 +65,8 @@ std::tuple<R, I> Galton(
 		tuple = RNG.Probability_Wave<R>(Board_SIZE, galton_arr, N_cycles, trials);
 
 	else {
-		Galton_Classic(trials, Board_SIZE, galton_arr);
-		tuple = std::make_tuple(0, Board_SIZE);
+		 Galton_Classic(trials, Board_SIZE, galton_arr);
+		tuple = std::make_tuple(0., Board_SIZE);
 	}
 
 	return tuple;
