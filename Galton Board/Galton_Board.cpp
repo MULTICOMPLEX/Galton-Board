@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	I N_Bins = 2048;
 
 	//Sinusoidal Distribution
-	B probability_wave = 0;
+	B probability_wave = true;
 	//Raw distribution
 	B raw = false;
 	//Enable Fourier transform
@@ -279,7 +279,7 @@ int main(int argc, char** argv)
 				for (auto i = 0.; i < Y_buf.size(); i++)
 					X.push_back(i);
 
-				plot.plot_somedata(X, Y_buf, "k", "Wav", "blue");
+				plot.plot_somedata(X, Y_buf, "", "Wav", "blue");
 
 				plot.set_title("Galton.wav");
 				plot.show();

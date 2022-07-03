@@ -181,18 +181,18 @@ public:
 	template <typename T, typename L>
 		requires std::floating_point<T>&&
 	std::integral<L>
-		T error_function(const T& x, const L& iterations)
+		T error_function_mc1(const T& x, const L& iterations)
 	{
 		const auto f = [](const auto& t) {return exp(-pow(t, 2)); };
 
 		T	totalSum = 0;
 
-		double lowBound = 0, upBound = x;
+		T lowBound = 0, upBound = x;
 
 		for (auto i = 0; i < iterations; i++)
 			totalSum += f((*this)(x));
 
-		double estimate = (upBound - lowBound) * totalSum / iterations;
+		T estimate = (upBound - lowBound) * totalSum / iterations;
 
 		estimate *= 2 / sqrt(std::numbers::pi);
 
@@ -206,7 +206,7 @@ public:
 	template <typename T, typename L>
 		requires std::floating_point<T>&&
 	std::integral<L>
-		T error_function_mc(const T& x, const L& iterations)
+		T error_function_mc2(const T& x, const L& iterations)
 	{
 		T erf;
 		L erft = 0;
@@ -216,7 +216,7 @@ public:
 		cxx::ziggurat_normal_distribution<double> normal(0, 1. / sqrt(2));
 
 		for (L i = 0; i < iterations; i++) {
-;
+
 				erf = normal(RNG);
 
 			if ((erf >= -x) && (erf <= x))
