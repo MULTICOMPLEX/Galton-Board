@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
 	/***************SETTINGS*****************/
 
-	std::uint64_t N_Trials = 50000000;
+	std::uint64_t N_Trials = 10000000;
 
 	I N_cycles = 8; //== Threads 
 

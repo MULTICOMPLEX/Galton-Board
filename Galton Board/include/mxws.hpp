@@ -196,9 +196,8 @@ public:
 
 		estimate *= 2 / sqrt(std::numbers::pi);
 
-		std::cout << "error function(" << x << ") = " << estimate << std::endl;
-		std::cout << " std::function(" << x << ") = "
-			<< std::erf(x) << std::endl;
+		//std::cout << "error function(" << x << ") = " << estimate << std::endl;
+		//std::cout << " std::function(" << x << ") = " << std::erf(x) << std::endl;
 
 		return estimate;
 	}
@@ -210,24 +209,27 @@ public:
 	{
 		T erf;
 		L erft = 0;
-		
+
 		mxws <uint32_t>RNG;
-		
+
 		cxx::ziggurat_normal_distribution<T> normal(0, 1. / sqrt(2));
+
+		auto k = abs(x);
 
 		for (L i = 0; i < iterations; i++) {
 
-				erf = normal(RNG);
+			erf = normal(RNG);
 
-			if ((erf >= -x) && (erf <= x))
+			if ((erf >= -k) && (erf <= k))
 				erft++;
 		}
 
-		std::cout << "error_function_mc(" << x << ") = " << erft / T(iterations) << std::endl;
-		std::cout << "    std::function(" << x << ") = "
-			<< std::erf(x) << std::endl;
+		//std::cout << "error_function_mc(" << x << ") = " << erft / T(iterations) << std::endl;
+		//std::cout << "    std::function(" << x << ") = " << std::erf(x) << std::endl;
 
-		return erft / T(iterations);
+		auto ret = erft / T(iterations);
+		if (x < 0)ret = -ret;
+		return ret;
 	}
 
 	template <typename T>
@@ -328,6 +330,29 @@ public:
 
 	template<typename T>
 		requires std::floating_point<T>
+	T normalCDF(const T x)
+	{
+		return std::erfc(-x / std::sqrt(2)) / 2.;
+	}
+
+	template <typename T, typename L>
+		requires std::floating_point<T>&&
+	std::integral<L>
+		T normalCDF_mc(const T x, const L n)
+	{
+		return erfc_mc(-x / std::sqrt(2), n) / 2;
+	}
+
+	template <typename T, typename L>
+		requires std::floating_point<T>&&
+	std::integral<L>
+		T erfc_mc(const T x, const L n)
+	{
+		return 1. - error_function_mc2(x, n);
+	}
+
+	template<typename T>
+		requires std::floating_point<T>
 	T inline probit(const T& p)
 	{
 		T root_2 = sqrt(2);
@@ -362,9 +387,9 @@ public:
 	}
 
 	template <typename T, typename L>
-		requires std::floating_point<T>&& 
+		requires std::floating_point<T>&&
 	std::same_as<L, std::uint64_t>
-	T sqrt_mc(T z = 2, L throws = 10000000000)
+		T sqrt_mc(T z = 2, L throws = 10000000000)
 	{
 		L tel = 0, i = 0;
 		T r;
@@ -393,9 +418,9 @@ public:
 	}
 
 	template <typename T, typename L>
-		requires std::floating_point<T>&& 
+		requires std::floating_point<T>&&
 	std::same_as<L, std::uint64_t>
-	T exp_mc(T x = 0.9, L n_samples = 10000000000)
+		T exp_mc(T x = 0.9, L n_samples = 10000000000)
 	{
 		if (x == 0) return 1;
 
