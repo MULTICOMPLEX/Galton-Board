@@ -1,7 +1,6 @@
 #include <random>
 #include <numbers>
 #include <iostream>
-#include <iostream>
 #include "ziggurat.hpp"
 
 template <typename RN>
@@ -24,6 +23,15 @@ public:
 	void seed()
 	{
 		init();
+		x1 = x2 = 1;
+	}
+
+	void seed(uint64_t x)
+	{
+		w = x;
+		x = 1;
+		w1 = w;
+		w2 = w1 + 1;
 		x1 = x2 = 1;
 	}
 
@@ -175,8 +183,11 @@ public:
 		// return a normally distributed random value
 		T v1 = (*this)(1.0);
 		T v2 = (*this)(1.0);
-		return std::cos(2 * std::numbers::pi * v2) * std::sqrt(-2 * std::log(v1)) * sigma + mean;
+		return std::cos(2 * std::numbers::pi * v2) * 
+			std::sqrt(-2 * std::log(v1)) * sigma + mean;
 	}
+
+	cxx::ziggurat_normal_distribution<double> normalRandomZ;
 
 	template <typename T, typename L>
 		requires std::floating_point<T>&&
@@ -365,7 +376,7 @@ public:
 		std::integral<I>&&
 		std::same_as<L, std::uint64_t>
 		std::tuple<R, I> Probability_Wave(const I& board_SIZE,
-			auto& cycle, const I& N_cycles, const L& TRIALS) {
+			auto& cycle, const L& TRIALS) {
 
 		const I board_size = I(round(log(board_SIZE * 6) * pow(tan(36 / 5.), 2)));
 		const I rn_range = I(floor(board_SIZE / sqrt(log2(board_SIZE))));
