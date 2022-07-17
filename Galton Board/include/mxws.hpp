@@ -183,11 +183,13 @@ public:
 		// return a normally distributed random value
 		T v1 = (*this)(1.0);
 		T v2 = (*this)(1.0);
-		return std::cos(2 * std::numbers::pi * v2) * 
+		return std::cos(2 * std::numbers::pi * v2) *
 			std::sqrt(-2 * std::log(v1)) * sigma + mean;
 	}
 
+
 	cxx::ziggurat_normal_distribution<double> normalRandomZ;
+
 
 	template <typename T, typename L>
 		requires std::floating_point<T>&&
@@ -395,6 +397,24 @@ public:
 		}
 
 		return std::make_tuple(rn_range, board_size);
+	}
+
+	double inline Sine()
+	{
+		typedef int I;
+		typedef double T;
+
+		const T sigma = 50;
+
+		const I board_size = I(round(log(sigma * 6) * pow(tan(36 / 5.), 2)));
+		const T rn_range = sigma / sqrt(log2(sigma));
+
+		T random_walk = 0;
+
+		for (auto j = 0; j < board_size; j++)
+			random_walk += (*this)(1.0);
+
+		return fmod(random_walk * rn_range, sigma);
 	}
 
 	template <typename T, typename L>

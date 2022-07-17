@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 
 	/***************SETTINGS*****************/
 
-	std::uint64_t N_Trials = 10000000;
+	std::uint64_t N_Trials = 100000000;
 
 	I N_cycles = 8; //== Threads 
 
@@ -178,8 +178,9 @@ int main(int argc, char** argv)
 
 			for (auto i = 0.; auto & d : std::span(cx).subspan(0, cx.size() / 2))
 			{
-				X.push_back(i++);
+				X.push_back(i);
 				Y.push_back(20 * std::log10(std::sqrt(d.norm()) / (cx.size() / 2.) + .001));
+				i++;
 			}
 
 			plot.set_ylabel("dB");
